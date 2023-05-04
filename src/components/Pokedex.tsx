@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
-import { formatPokemonName } from "./utils";
+import React from "react";
+
+import { formatName, pokeapiData } from "./utils";
 
 type ItemProps = { index: number; navigation: any };
 
@@ -8,27 +10,29 @@ function Pokemon({ index, navigation }: ItemProps) {
   const apiUrl = `https://pokeapi.co/api/v2/pokemon/`;
   const pokeIndex = index + 1;
 
-  const [name, setName] = useState("Loading...");
+  const [data, setData] = useState<pokeapiData>(undefined);
 
   useEffect(() => {
     const triggerAPICall = async () => {
-      const data = await fetch(apiUrl + pokeIndex).then((response) =>
+      const data: pokeapiData = await fetch(apiUrl + pokeIndex).then((response) =>
         response.json()
       );
-      setName(formatPokemonName(data.name));
+      setData(data);
     };
     triggerAPICall();
   }, []);
 
-  return name === "Loading..." ? (
-    <View></View>
+  return data === undefined ? (
+    <View />
   ) : (
     <View style={styles.pokemon}>
-      <Text style={styles.name}>{pokeIndex}. {name}</Text>
+      <Text style={styles.name}>
+        {pokeIndex}. {formatName(data.name)}
+      </Text>
       <View style={styles.button}>
         <Button
           title="+"
-          onPress={() => navigation.navigate("PokemonPage")}
+          onPress={() => navigation.navigate("Pokemon Details", data)}
         />
       </View>
     </View>
@@ -77,9 +81,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     justifyContent: "center",
     flexDirection: "column",
-    alignContent: 'flex-start',
+    alignContent: "flex-start",
     width: 35,
     height: 35,
     fontSize: 45,
-  }
+  },
 });

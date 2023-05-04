@@ -1,2 +1,2 @@
-export * from './PokemonPage';
+export * from './PokemonDetails';
 export * from './Pokedex';
