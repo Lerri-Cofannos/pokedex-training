@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Image } from "@rneui/themed";
 
@@ -24,7 +24,7 @@ function Pokemon({ index, navigation }: ItemProps) {
   }, []);
 
   return !!data ? (
-    <View style={styles.tile}>
+    <TouchableOpacity style={styles.tile} onPress={() => navigation.navigate("Pokemon Details", data)}>
       <View style={styles.tag}>
         <Image
           style={styles.sprite}
@@ -32,13 +32,7 @@ function Pokemon({ index, navigation }: ItemProps) {
         />
         <Text style={styles.name}>{data.id}. {formatName(data.name)}</Text>
       </View>
-      <View style={styles.button}>
-        <Button
-          title="+"
-          onPress={() => navigation.navigate("Pokemon Details", data)}
-        />
-      </View>
-    </View>
+    </TouchableOpacity>
   ) : (
     <View />
   );
