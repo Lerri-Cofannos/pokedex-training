@@ -1,8 +1,19 @@
 export function formatName(name: string): string {
   const words = name.split("-");
-  return words.map((word) => {
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  }).join(" ");
+  return words
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+}
+
+export function formatNumber(number: number): string {
+  const stringNumber = number.toString();
+  const splitNumber = stringNumber.split(".");
+  splitNumber[1] = splitNumber[1]
+    ? splitNumber[1].slice(0, 2).padEnd(2, "0")
+    : "00";
+  return splitNumber.join(".");
 }
 
 export interface pokeapiData {
@@ -21,11 +32,18 @@ export interface pokeapiData {
       url: string;
     };
   }>;
-  forms: Array<any>;
-  game_indices: Array<any>;
-  held_items: Array<any>;
+  forms: Array<{
+    name: string;
+    url: string;
+  }>;
+  game_indices: Array<{
+    game_index: number;
+    version: {
+      name: string;
+      url: string;
+    };
+  }>;
   location_area_encounters: string;
-  moves: Array<any>;
   species: {
     name: string;
     url: string;
@@ -54,7 +72,6 @@ export interface pokeapiData {
         front_default: string;
       };
     };
-    versions: any;
   };
   stats: Array<{
     base_stat: number;
@@ -71,5 +88,4 @@ export interface pokeapiData {
       url: string;
     };
   }>;
-  past_types: Array<any>;
 }

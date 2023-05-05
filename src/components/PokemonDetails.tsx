@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Image } from "@rneui/themed";
 
-import { formatName, pokeapiData } from "./utils";
+import { formatName, formatNumber, pokeapiData } from "./utils";
 
 export function PokemonDetails() {
   const route = useRoute();
@@ -19,8 +19,8 @@ export function PokemonDetails() {
         {formatName(data.name)} (n°{data.id})
       </Text>
       <View>
-        <Text style={styles.details}>Height: {data.height}</Text>
-        <Text style={styles.details}>Weight: {data.weight}kg</Text>
+        <Text style={styles.details}>Height: {formatNumber(data.height/10)}m</Text>
+        <Text style={styles.details}>Weight: {formatNumber(data.weight/10)}kg</Text>
         <Text style={styles.details}>
           Abilities:{" "}
           {data.abilities

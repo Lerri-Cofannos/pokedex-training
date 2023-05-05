@@ -14,17 +14,15 @@ function Pokemon({ index, navigation }: ItemProps) {
 
   useEffect(() => {
     const triggerAPICall = async () => {
-      const data: pokeapiData = await fetch(apiUrl + pokeIndex).then((response) =>
-        response.json()
+      const data: pokeapiData = await fetch(apiUrl + pokeIndex).then(
+        (response) => response.json()
       );
       setData(data);
     };
     triggerAPICall();
   }, []);
 
-  return data === undefined ? (
-    <View />
-  ) : (
+  return !!data ? (
     <View style={styles.pokemon}>
       <Text style={styles.name}>
         {pokeIndex}. {formatName(data.name)}
@@ -36,6 +34,8 @@ function Pokemon({ index, navigation }: ItemProps) {
         />
       </View>
     </View>
+  ) : (
+    <View />
   );
 }
 
