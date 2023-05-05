@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { Image } from "@rneui/themed";
 
 import { formatName, pokeapiData } from "./utils";
 
@@ -23,10 +24,14 @@ function Pokemon({ index, navigation }: ItemProps) {
   }, []);
 
   return !!data ? (
-    <View style={styles.pokemon}>
-      <Text style={styles.name}>
-        {pokeIndex}. {formatName(data.name)}
-      </Text>
+    <View style={styles.tile}>
+      <View style={styles.tag}>
+        <Image
+          style={styles.sprite}
+          source={{ uri: data.sprites.front_default }}
+        />
+        <Text style={styles.name}>{data.id}. {formatName(data.name)}</Text>
+      </View>
       <View style={styles.button}>
         <Button
           title="+"
@@ -60,9 +65,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  pokemon: {
+  tile: {
     backgroundColor: "#bdf",
-    padding: 20,
+    paddingHorizontal: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     width: 300,
@@ -71,8 +76,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  tag: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sprite: {
+    height: 60,
+    width: 60,
+  },
   name: {
-    fontSize: 20,
+    fontSize: 18,
     marginRight: 10,
   },
   button: {
