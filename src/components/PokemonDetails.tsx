@@ -4,7 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import { Image } from "@rneui/themed";
 import { Audio } from "expo-av";
 
-import { formatName, formatNumber, pokeapiData } from "./utils";
+import { formatName, formatNumber, isPokemonFlying, pokeapiData } from "./utils";
 
 export function PokemonDetails() {
   const route = useRoute();
@@ -31,6 +31,7 @@ export function PokemonDetails() {
         style={styles.artwork}
         source={{ uri: data.sprites.other["official-artwork"].front_default }}
       />
+      {isPokemonFlying(data.types) ? <View style={styles.sky} /> : <View style={styles.ground} />}
       <Text style={styles.nameTitle}>
         {formatName(data.name)} (n°{data.id})
       </Text>
@@ -39,8 +40,14 @@ export function PokemonDetails() {
         <Text style={styles.details}>Weight: {formatNumber(data.weight/10)}kg</Text>
         <Text style={styles.details}>Abilities:</Text>
         {data.abilities.map((item) => (
-          <Text style={styles.details} key={item.slot}>
-            {" - " + formatName(item.ability.name)}
+          <Text style={styles.list} key={item.slot}>
+            {"- " + formatName(item.ability.name)}
+          </Text>
+        ))}
+        <Text style={styles.details}>Types:</Text>
+        {data.types.map((item) => (
+          <Text style={styles.list} key={item.slot}>
+            {"- " + formatName(item.type.name)}
           </Text>
         ))}
       </View>
@@ -63,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#eee",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   artwork: {
     width: 200,
@@ -78,11 +85,35 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 5,
   },
+  list: {
+    fontSize: 18,
+    paddingVertical: 0,
+    marginLeft: 15,
+  },
   row: {
     flexDirection: "row",
   },
   sprites: {
     width: 100,
     height: 100,
+  },
+  ground: {
+    marginBottom: -60,
+    position: "relative",
+    top: -80,
+    zIndex: -1,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#89c",
+    opacity: 0.4,
+    shadowColor: "#347",
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 10 },
+    transform: [{ scaleX: 2.5 }],
+  },
+  sky: {
+    marginBottom: 20,
   },
 });

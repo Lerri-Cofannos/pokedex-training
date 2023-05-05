@@ -16,6 +16,10 @@ export function formatNumber(number: number): string {
   return splitNumber.join(".");
 }
 
+export function isPokemonFlying(types: Array<PokeType>): boolean {
+  return types.some((item) => item.type.name === "flying");
+}
+
 export interface pokeapiData {
   id: number;
   name: string;
@@ -81,11 +85,13 @@ export interface pokeapiData {
       url: string;
     };
   }>;
-  types: Array<{
-    slot: number;
-    type: {
-      name: string;
-      url: string;
-    };
-  }>;
+  types: Array<PokeType>;
+}
+
+interface PokeType {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
 }
