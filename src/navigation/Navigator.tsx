@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 
-import { Pokedex, PokemonDetails } from '../components';
+import { Pokedex, PokemonDetails } from '../screens';
 
 const Stack = createNativeStackNavigator();
 
