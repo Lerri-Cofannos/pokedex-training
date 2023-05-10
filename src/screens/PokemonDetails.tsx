@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Image } from "@rneui/themed";
@@ -11,6 +17,7 @@ import {
   speciesDataExtractor,
 } from "../helpers";
 import { EvolutionTree, Section } from "../components";
+import { NavigationArrow } from "../components/NavigationArrow";
 
 export function PokemonDetails({ navigation }) {
   const route = useRoute();
@@ -52,15 +59,31 @@ export function PokemonDetails({ navigation }) {
         contentOffset={{ x: 0, y: 0 }}
         ref={scrollRef}
       >
-        <Image
-          style={styles.artwork}
-          source={{ uri: data.sprites.other["official-artwork"].front_default }}
-        />
-        {data.types.some((item) => item.type.name === "flying") ? (
-          <View style={styles.sky} />
-        ) : (
-          <View style={styles.ground} />
-        )}
+        <View style={styles.header}>
+          <NavigationArrow
+            aimId={data.id - 1}
+            direction="left"
+            navigation={navigation}
+          />
+          <View style={styles.headerImage}>
+            <Image
+              style={styles.artwork}
+              source={{
+                uri: data.sprites.other["official-artwork"].front_default,
+              }}
+            />
+            {data.types.some((item) => item.type.name === "flying") ? (
+              <View style={styles.sky} />
+            ) : (
+              <View style={styles.ground} />
+            )}
+          </View>
+          <NavigationArrow
+            aimId={data.id + 1}
+            direction="right"
+            navigation={navigation}
+          />
+        </View>
         <Text style={styles.nameTitle}>
           {formatName(data.name)} (n°{data.id})
         </Text>
@@ -105,7 +128,11 @@ export function PokemonDetails({ navigation }) {
               Searching in the evolution tree...
             </Text>
           ) : (
-            <EvolutionTree data={evolutionTree} navigation={navigation} scrollRef={scrollRef}/>
+            <EvolutionTree
+              data={evolutionTree}
+              navigation={navigation}
+              scrollRef={scrollRef}
+            />
           )}
         </Section>
       </ScrollView>
@@ -117,6 +144,17 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#eee",
     alignItems: "center",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+  },
+  headerImage: {
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
   artwork: {
     width: 200,
@@ -155,12 +193,12 @@ const styles = StyleSheet.create({
     height: 100,
   },
   ground: {
-    marginBottom: -60,
+    marginBottom: -70,
     position: "relative",
     top: -80,
     zIndex: -1,
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
     borderRadius: 50,
     backgroundColor: "#89c",
     opacity: 0.4,
