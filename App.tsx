@@ -1,8 +1,14 @@
-import React from 'react';
-import Navigator from './src/navigation/Navigator';
+import React from "react";
+import { View } from "react-native";
+
+import CardStack from "./src/layout/CardStack";
+import Header from "./src/layout/Header";
 
 export default function App() {
   return (
-    <Navigator />
+    <View>
+      <Header />
+      <CardStack />
+    </View>
   );
 }

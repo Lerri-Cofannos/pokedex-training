@@ -1,34 +1,85 @@
-import React from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  Easing,
+} from "react-native";
 import { Icon } from "react-native-elements";
 
-import { PokeData } from "../helpers";
+export function NavigationArrow({ direction, stackRef }) {
+  const isLeft = direction === "left";
 
-export function NavigationArrow({ aimId, direction, navigation }) {
   async function goToPokemon() {
-    const apiUrl = `https://pokeapi.co/api/v2/pokemon/`;
-    const newData: PokeData = await fetch(apiUrl + aimId).then((response) =>
-      response.json()
-    );
-    navigation.setOptions({
-      animationEnabled:  false,
-    });
-    navigation.replace("Pokemon Details", newData);
+    stackRef.current.scrollTo({ count: isLeft ? -1 : 1, animated: true });
   }
-  const iconName = direction === "left" ? "chevron-left" : "chevron-right";
+
+  const verticalVal = new Animated.Value(0);
+  const config = (value: number) => ({
+    toValue: value,
+    duration: 1500,
+    easing: Easing.inOut(Easing.quad),
+    useNativeDriver: false,
+  });
+
+  useEffect(() => {
+    const range = 10;
+    Animated.timing(verticalVal, config(range)).start();
+    verticalVal.addListener(({ value }) => {
+      if (value == range) {
+        Animated.timing(verticalVal, config(0)).start();
+      } else if (value == 0) {
+        Animated.timing(verticalVal, config(range)).start();
+      }
+    });
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={goToPokemon}>
-        <Icon name={iconName} size={30} color="black" type="entypo" />
+    <View style={isLeft ? styles.containerLeft : styles.containerRight}>
+      <TouchableOpacity onPress={goToPokemon} style={styles.sizer}>
+        <Animated.View
+          style={{
+            transform: [{ translateY: verticalVal }],
+          }}
+        >
+          <Icon
+            name={"chevron-thin-" + direction}
+            size={40}
+            color="black"
+            type="entypo"
+            style={styles.arrow}
+          />
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  containerRight: {
+    position: "absolute",
+    top: Dimensions.get("window").height / 2 - 100,
+    right: 0,
+  },
+  containerLeft: {
+    position: "absolute",
+    top: Dimensions.get("window").height / 2 - 100,
+    left: 0,
+  },
+  sizer: {
     height: 200,
+    width: 50,
     alignContent: "center",
     justifyContent: "center",
+  },
+  arrow: {
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
   },
 });

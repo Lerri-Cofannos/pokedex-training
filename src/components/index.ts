@@ -1,3 +1,2 @@
-export * from "./EvolutionTree";
-export * from "./PokemonTile";
-export * from "./Section";
+export * from "./NavigationArrow";
+export * from "./Card";
