@@ -6,16 +6,16 @@ import { formatName, PokeData } from "../helpers";
 
 type ItemProps = {
   data: PokeData;
-  navigation: any;
-  scrollRef: any;
+  stackRef: any;
 };
 
-export function EvolutionTile({ data, navigation, scrollRef }: ItemProps) {
+export function EvolutionTile({ data, stackRef }: ItemProps) {
   return (
     <TouchableOpacity
       onPress={() => {
-        scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
-        navigation.navigate("Pokemon Details", data);
+        console.log(stackRef.current);
+        console.log(data.id)
+        stackRef.current.scrollTo({ index:1, animated: true });
       }}
     >
       <View style={styles.container}>

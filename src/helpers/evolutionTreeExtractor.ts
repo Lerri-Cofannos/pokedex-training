@@ -43,6 +43,5 @@ async function evolutionTreeExtractor(chainUrl: string): Promise<PokeData[][]> {
     t_generation = t_newGeneration;
     generationIndex++;
   }
-  console.log("Pokemons extracted: " + familyData.map((gen) => gen.map((poke) => poke.name)));
   return familyData;
 }

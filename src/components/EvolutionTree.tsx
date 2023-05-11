@@ -2,15 +2,14 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React from "react";
 
 import { EvolutionTile } from "./EvolutionTile";
-import { PokeData } from "../helpers/types";
+import { PokeData } from "./../helpers";
 
 type ItemProps = {
   data: PokeData[][];
-  navigation: any;
-  scrollRef: any;
+  stackRef: any;
 };
 
-export function EvolutionTree({ data, navigation, scrollRef }: ItemProps) {
+export function EvolutionTree({ data, stackRef }: ItemProps) {
   return (
     <View style={styles.container}>
       {data.map((row, index) => {
@@ -22,7 +21,7 @@ export function EvolutionTree({ data, navigation, scrollRef }: ItemProps) {
               Evolution stage n°{index + 1}
             </Text>
             {row.map((item) => (
-              <EvolutionTile data={item} key={item.id} navigation={navigation} scrollRef={scrollRef}/>
+              <EvolutionTile data={item} key={item.id} stackRef={stackRef}/>
             ))}
           </View>
         );
