@@ -35,7 +35,7 @@ export default function CardStack() {
     <View>
       <View style={{ flex: 1 }}>
         <Carousel
-          windowSize={7}
+          windowSize={5}
           loop
           ref={stackRef}
           style={{
